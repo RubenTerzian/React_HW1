@@ -22,7 +22,7 @@ const Modal = ({isActive, showModal, modalData})=>{
   return isActive ? (
     <div className="modal active">
       <div className="container">
-          <button  onClick={showModal}>close</button>
+          <button  onClick={showModal}>X</button>
           <div className="left">
             <img src={modalData.picture} alt="user_image"/>
           </div>
@@ -60,9 +60,6 @@ const UsersList = ({arrayForRender, showModal, renderModal})=>{
 }
 
 const Header = ({handlerInput, handlerSelect, handleReset}) =>{
-  const unicAgeArray = userData.filter((item, index, array)=> {
-    return index === array.findIndex(el=> el.age === item.age) 
-  }).sort((a, b)=> a.age-b.age);
   return(
     <header>
         <input 
@@ -71,63 +68,63 @@ const Header = ({handlerInput, handlerSelect, handleReset}) =>{
         onChange={handlerInput}
         />
         <select name="Age" onChange={handlerSelect}>
-          {unicAgeArray.map(user =>{
-            return (
-            <option 
-            value={user.age}
-            key={"optionId_"+user.index}  
-            >{user.age}</option>)
-          })}
+            <option  value="default">default</option>
+            <option  value="asc">Age asc</option>
+            <option  value="desc">Age desc</option>
         </select>
         <button onClick={handleReset}>reset</button>
     </header>
   )
   
 }
+const renderConfig ={name: "", typeOfSort: "default"}
 
 const App = () =>{
   const [arrayForRender, setArrayForRender] = useState(userData);
-  const [renderConfig, setRenderConfig] = useState({});
   const [modalIsActive, setModalIsActive] = useState(false);
   const [modalData, setModalData] = useState({});
 
   const createArrayByConfig = () =>{
-    if(renderConfig.name || renderConfig.name == "" && renderConfig.age){
-      const array = userData.filter(user => {
-        return (user.name.toLowerCase()).includes(renderConfig.name) && user.age == renderConfig.age
-      })
-      return array
-    }else if(renderConfig.name || renderConfig.name == ""){
-      const array = userData.filter(user => {
-        return (user.name.toLowerCase()).includes(renderConfig.name)
-      })
-      return array
-    }else{
-      const array = userData.filter(user => {
-        return (user.age == renderConfig.age)
-      })
-      return array
+    // if((renderConfig.name && renderConfig.age) || (renderConfig.name == "" && renderConfig.age)){
+    //   const array = userData.filter(user => {
+    //     return (user.name.toLowerCase()).includes(renderConfig.name) && user.age == renderConfig.age
+    //   })
+      
+    //   console.log(renderConfig.name, renderConfig.age)
+    //   return array
+    // }else 
+    
+    const array = userData.filter(user => {
+      return (user.name.toLowerCase()).includes(renderConfig.name)
+    })
+    console.log(renderConfig.name, renderConfig.age)
+    if(renderConfig.typeOfSort === "asc"){
+      return array.sort((a, b)=> a.age-b.age);
     }
+    if(renderConfig.typeOfSort === "desc"){
+      return array.sort((a, b)=> b.age-a.age);
+    }
+    return array
   }
 
   const HandleReset = (e)=>{
     e.target.parentNode.children[0].value =''; 
-    e.target.parentNode.children[1].value = '';
+    e.target.parentNode.children[1].value = "default";
     setArrayForRender(userData)
+    renderConfig.name = "";
+    renderConfig.typeOfSort = "default";
   }
 
   const HandlerSelect = (e) =>{
-    setRenderConfig({...renderConfig, age: e.target.value});
+    renderConfig.typeOfSort = e.target.value;
     const array = createArrayByConfig()
     setArrayForRender(array)
-    console.log(renderConfig)
   }
 
   const HandlerInput = (e) =>{
-    setRenderConfig({...renderConfig, name: e.target.value.toLowerCase()});
+    renderConfig.name = e.target.value.toLowerCase();
     const array = createArrayByConfig()
     setArrayForRender(array)
-    console.log(renderConfig)
   }
 
   const ShowModal = (e)=>{
@@ -138,7 +135,6 @@ const App = () =>{
   const RenderModal = (user)=>{
     if(!modalIsActive){
       setModalData(user)
-      console.log(user)
     }
   }
 

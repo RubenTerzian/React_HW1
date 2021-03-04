@@ -54,7 +54,7 @@ main{
   padding: 20px 15px;
   border: 1px solid #e2e2e2;
   box-shadow: 0 0 15px -13px;
-
+  cursor: pointer;
 }
 
 .card img{
@@ -89,14 +89,20 @@ main{
 
 .container button{
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .container .left{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   width: 150px;
   padding: 10px;
   border-right: 2px solid #e2e2e2;
