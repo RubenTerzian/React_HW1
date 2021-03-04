@@ -85,19 +85,9 @@ const App = () =>{
   const [modalData, setModalData] = useState({});
 
   const createArrayByConfig = () =>{
-    // if((renderConfig.name && renderConfig.age) || (renderConfig.name == "" && renderConfig.age)){
-    //   const array = userData.filter(user => {
-    //     return (user.name.toLowerCase()).includes(renderConfig.name) && user.age == renderConfig.age
-    //   })
-      
-    //   console.log(renderConfig.name, renderConfig.age)
-    //   return array
-    // }else 
-    
     const array = userData.filter(user => {
       return (user.name.toLowerCase()).includes(renderConfig.name)
     })
-    console.log(renderConfig.name, renderConfig.age)
     if(renderConfig.typeOfSort === "asc"){
       return array.sort((a, b)=> a.age-b.age);
     }
